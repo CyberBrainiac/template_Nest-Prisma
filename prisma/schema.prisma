@@ -12,3 +12,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Owner {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  name  String
+  cat   Cat[]
+}
+
+model Cat {
+  id      Int    @id @default(autoincrement())
+  age     Int?
+  breed   String
+  ownerId Int
+  owner   Owner  @relation(fields: [ownerId], references: [id])
+}

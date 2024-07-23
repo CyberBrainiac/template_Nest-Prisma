@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/owner/dto/create-owner.dto.ts"],"sourcesContent":["export class CreateOwnerDto {\n  name: string;\n  email: string;\n}\n"],"names":["CreateOwnerDto"],"mappings":";;;;+BAAaA;;;eAAAA;;;AAAN,IAAA,AAAMA,iBAAN,MAAMA;AAGb"}

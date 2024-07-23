@@ -9,6 +9,13 @@ Object.defineProperty(exports, "CreateCatDto", {
     }
 });
 let CreateCatDto = class CreateCatDto {
-};
+} /*
+export interface ICreateCatDto {
+  name: string;
+  email: string;
+  age?: number;
+  breed?: string;
+}
+*/ ;
 
 //# sourceMappingURL=create-cat.dto.js.map
