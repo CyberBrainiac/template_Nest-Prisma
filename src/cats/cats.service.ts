@@ -1,26 +1,56 @@
+import { PrismaService } from '@app/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { CreateCatDto } from './dto/create-cat.dto';
-import { UpdateCatDto } from './dto/update-cat.dto';
+import { Cat, Prisma } from '@prisma/client';
 
 @Injectable()
 export class CatsService {
-  create(data: CreateCatDto) {
-    return `This action adds a new cat ${data.name} with email: ${data.email}`;
+  constructor(private prisma: PrismaService) {}
+
+  async cat(
+    catWhereUniqueInput: Prisma.CatWhereUniqueInput,
+  ): Promise<Cat | null> {
+    return this.prisma.cat.findUnique({
+      where: catWhereUniqueInput,
+    });
   }
 
-  findAll() {
-    return `This action returns all cats`;
+  async cats(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.CatWhereUniqueInput;
+    where?: Prisma.CatWhereInput;
+    orderBy?: Prisma.CatOrderByWithRelationInput;
+  }): Promise<Cat[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.cat.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cat`;
+  async createCat(data: Prisma.CatCreateInput): Promise<Cat> {
+    return this.prisma.cat.create({
+      data,
+    });
   }
 
-  update(id: number, updateCatDto: UpdateCatDto) {
-    return `This action updates a #${id} cat`;
+  async updateCat(params: {
+    where: Prisma.CatWhereUniqueInput;
+    data: Prisma.CatUpdateInput;
+  }): Promise<Cat> {
+    const { data, where } = params;
+    return this.prisma.cat.update({
+      data,
+      where,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cat`;
+  async deleteCat(where: Prisma.CatWhereUniqueInput): Promise<Cat> {
+    return this.prisma.cat.delete({
+      where,
+    });
   }
 }

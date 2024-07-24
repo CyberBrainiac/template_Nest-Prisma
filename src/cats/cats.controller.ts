@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  Req,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -18,26 +17,39 @@ export class CatsController {
 
   @Post()
   create(@Body() createCatDto: CreateCatDto) {
-    return this.catsService.create(createCatDto);
+    const basicEmail = 'basic@gmail.com';
+    const basicName = 'basicName';
+
+    return this.catsService.createCat({
+      age: +createCatDto.age,
+      breed: createCatDto.breed,
+      name: createCatDto.name,
+      owner: {
+        connectOrCreate: {
+          where: { id: +createCatDto.ownerId },
+          create: { email: basicEmail, name: basicName },
+        },
+      },
+    });
   }
 
   @Get()
   findAll() {
-    return this.catsService.findAll();
+    return this.catsService.cats({ orderBy: { id: 'asc' } });
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.catsService.findOne(+id);
+    return this.catsService.cat({ id: +id });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCatDto: UpdateCatDto) {
-    return this.catsService.update(+id, updateCatDto);
+  update(@Param('id') id: string, @Body() data: UpdateCatDto) {
+    return this.catsService.updateCat({ where: { id: +id }, data });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.catsService.remove(+id);
+    return this.catsService.deleteCat({ id: +id });
   }
 }

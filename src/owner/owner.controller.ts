@@ -8,16 +8,15 @@ import {
   Delete,
 } from '@nestjs/common';
 import { OwnerService } from './owner.service';
-import { CreateOwnerDto } from './dto/create-owner.dto';
-import { UpdateOwnerDto } from './dto/update-owner.dto';
+import { Prisma } from '@prisma/client';
 
 @Controller('owner')
 export class OwnerController {
   constructor(private readonly ownerService: OwnerService) {}
 
   @Post()
-  create(@Body() createOwnerDto: CreateOwnerDto) {
-    return this.ownerService.create(createOwnerDto);
+  create(@Body() data: Prisma.OwnerCreateInput) {
+    return this.ownerService.createOwner(data);
   }
 
   @Get()
@@ -27,16 +26,16 @@ export class OwnerController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.ownerService.findOne(+id);
+    return this.ownerService.owner({ id: +id });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOwnerDto: UpdateOwnerDto) {
-    return this.ownerService.update(+id, updateOwnerDto);
+  update(@Param('id') id: string, @Body() data: Prisma.OwnerUpdateInput) {
+    return this.ownerService.updateOwner({ where: { id: +id }, data });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.ownerService.remove(+id);
+    return this.ownerService.deleteOwner({ id: +id });
   }
 }
