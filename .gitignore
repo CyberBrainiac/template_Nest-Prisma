@@ -31,7 +31,6 @@ yarn-debug.log*
 pnpm-debug.log*
 
 # VSCode
-.vscode/
 *.code-workspace
 
 # OS files
