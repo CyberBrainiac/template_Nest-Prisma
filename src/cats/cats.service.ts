@@ -6,6 +6,10 @@ import { Cat, Prisma } from '@prisma/client';
 export class CatsService {
   constructor(private prisma: PrismaService) {}
 
+  sayMeu(): string {
+    return 'MEY! MEU!';
+  }
+
   async cat(
     catWhereUniqueInput: Prisma.CatWhereUniqueInput,
   ): Promise<Cat | null> {

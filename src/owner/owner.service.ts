@@ -1,14 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { Owner, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { CatsService } from '@app/cats/cats.service';
 
 @Injectable()
 export class OwnerService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private catsService: CatsService,
+  ) {}
 
   async owner(
     ownerWhereUniqueInput: Prisma.OwnerWhereUniqueInput,
   ): Promise<Owner | null> {
+    console.log('owner.service, 16', this.catsService.sayMeu());
+
     return this.prisma.owner.findUnique({
       where: ownerWhereUniqueInput,
       include: { cat: true },
