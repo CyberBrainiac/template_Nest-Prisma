@@ -1,5 +1,5 @@
 import { PrismaService } from '@app/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Cat, Prisma } from '@prisma/client';
 
 @Injectable()
@@ -7,7 +7,8 @@ export class CatsService {
   constructor(private prisma: PrismaService) {}
 
   sayMeu(): string {
-    return 'MEY! MEU!';
+    // return 'MEY! MEU!';
+    throw new InternalServerErrorException();
   }
 
   async cat(

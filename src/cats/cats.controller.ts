@@ -33,6 +33,11 @@ export class CatsController {
     });
   }
 
+  @Get('/meu')
+  sayMeu() {
+    return this.catsService.sayMeu();
+  }
+
   @Get()
   findAll() {
     return this.catsService.cats({ orderBy: { id: 'asc' } });
