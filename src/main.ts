@@ -1,8 +1,8 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
-import { AllExceptionsFilter } from './exceptions/AllExcepptionFilter';
-import { HttpExceptionFilter } from './exceptions/httpExceptionFilter';
+import { AllExceptionsFilter } from './filters/all-exception.filter';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
   const port = 3000;
