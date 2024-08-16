@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { OwnerService } from './owner.service';
 import { Prisma } from '@prisma/client';
@@ -21,12 +22,12 @@ export class OwnerController {
 
   @Get()
   findAll() {
-    return this.ownerService.owners({ orderBy: { name: 'asc' } });
+    return this.ownerService.owners({ orderBy: { id: 'asc' } });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ownerService.owner({ id: +id });
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.ownerService.owner({ id });
   }
 
   @Patch(':id')

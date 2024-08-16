@@ -20,17 +20,20 @@ export class CatsController {
     const basicEmail = 'basic@gmail.com';
     const basicName = 'basicName';
 
-    return this.catsService.createCat({
-      age: +createCatDto.age,
-      breed: createCatDto.breed,
-      name: createCatDto.name,
-      owner: {
-        connectOrCreate: {
-          where: { id: +createCatDto.ownerId },
-          create: { email: basicEmail, name: basicName },
+    return this.catsService.createCat(
+      {
+        age: +createCatDto.age,
+        breed: createCatDto.breed,
+        name: createCatDto.name,
+        owner: {
+          connectOrCreate: {
+            where: { id: +createCatDto.ownerId },
+            create: { email: basicEmail, name: basicName },
+          },
         },
       },
-    });
+      +createCatDto.ownerId,
+    );
   }
 
   @Get('/meu')

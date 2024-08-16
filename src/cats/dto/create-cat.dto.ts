@@ -1,5 +1,5 @@
 export class CreateCatDto {
-  /** best approach */
+  /** best approach - class*/
   name?: string;
   ownerId: number;
   age?: number;
