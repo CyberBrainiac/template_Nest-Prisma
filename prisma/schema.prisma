@@ -22,9 +22,9 @@ model Owner {
 
 model Cat {
   id      Int     @id @default(autoincrement())
-  breed   String
+  breed   String?
   age     Int?
-  name    String?
+  name    String
   ownerId Int
   owner   Owner   @relation(fields: [ownerId], references: [id])
 }

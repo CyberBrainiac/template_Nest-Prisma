@@ -10,6 +10,7 @@ import {
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
+import { ValidationPipe } from '@app/pipes/validation.pipe';
 
 @Controller('cats')
 export class CatsController {
@@ -22,12 +23,12 @@ export class CatsController {
 
     return this.catsService.createCat(
       {
-        age: +createCatDto.age,
+        age: createCatDto.age,
         breed: createCatDto.breed,
         name: createCatDto.name,
         owner: {
           connectOrCreate: {
-            where: { id: +createCatDto.ownerId },
+            where: { id: createCatDto.ownerId },
             create: { email: basicEmail, name: basicName },
           },
         },

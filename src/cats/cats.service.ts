@@ -41,9 +41,11 @@ export class CatsService {
   }
 
   async createCat(data: Prisma.CatCreateInput, ownerId: number): Promise<Cat> {
-    const catAlreadyAdded = this.cats({
+    const searchCat = await this.cats({
       where: { name: data.name, age: data.age, ownerId: ownerId },
     });
+    const catAlreadyAdded = !!searchCat.length;
+
     if (catAlreadyAdded)
       throw new ConflictException(
         `cat already added. Name: ${data.name}, age: ${data.age}, ownerId: ${ownerId}`,

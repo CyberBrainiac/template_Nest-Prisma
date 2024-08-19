@@ -1,8 +1,30 @@
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
+
 export class CreateCatDto {
-  /** best approach - class*/
-  name?: string;
+  // best approach - class
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsInt()
   ownerId: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(40)
   age?: number;
+
+  @IsOptional()
+  @IsString()
   breed?: string;
 }
 
