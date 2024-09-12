@@ -7,9 +7,10 @@ import { OwnerModule } from './owner/owner.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { CatsController } from './cats/cats.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [CatsModule, ConfigModule.forRoot({ isGlobal: true }), OwnerModule, PrismaModule],
+  imports: [CatsModule, ConfigModule.forRoot({ isGlobal: true }), OwnerModule, PrismaModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
