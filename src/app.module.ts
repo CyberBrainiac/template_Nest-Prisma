@@ -9,12 +9,7 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { CatsController } from './cats/cats.controller';
 
 @Module({
-  imports: [
-    CatsModule,
-    ConfigModule.forRoot({ isGlobal: true }),
-    OwnerModule,
-    PrismaModule,
-  ],
+  imports: [CatsModule, ConfigModule.forRoot({ isGlobal: true }), OwnerModule, PrismaModule],
   controllers: [AppController],
   providers: [AppService],
 })

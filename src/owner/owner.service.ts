@@ -6,9 +6,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class OwnerService {
   constructor(private prisma: PrismaService) {}
 
-  async owner(
-    ownerWhereUniqueInput: Prisma.OwnerWhereUniqueInput,
-  ): Promise<Owner | null> {
+  async owner(ownerWhereUniqueInput: Prisma.OwnerWhereUniqueInput): Promise<Owner | null> {
     return this.prisma.owner.findUnique({
       where: ownerWhereUniqueInput,
       include: { cat: true },
@@ -38,10 +36,7 @@ export class OwnerService {
     });
   }
 
-  async updateOwner(params: {
-    where: Prisma.OwnerWhereUniqueInput;
-    data: Prisma.OwnerUpdateInput;
-  }): Promise<Owner> {
+  async updateOwner(params: { where: Prisma.OwnerWhereUniqueInput; data: Prisma.OwnerUpdateInput }): Promise<Owner> {
     const { where, data } = params;
     return this.prisma.owner.update({
       data,

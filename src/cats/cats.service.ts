@@ -1,9 +1,5 @@
 import { PrismaService } from '@app/prisma/prisma.service';
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Cat, Prisma } from '@prisma/client';
 
 @Injectable()
@@ -15,9 +11,7 @@ export class CatsService {
     throw new InternalServerErrorException();
   }
 
-  async cat(
-    catWhereUniqueInput: Prisma.CatWhereUniqueInput,
-  ): Promise<Cat | null> {
+  async cat(catWhereUniqueInput: Prisma.CatWhereUniqueInput): Promise<Cat | null> {
     return this.prisma.cat.findUnique({
       where: catWhereUniqueInput,
     });
@@ -47,18 +41,13 @@ export class CatsService {
     const catAlreadyAdded = !!searchCat.length;
 
     if (catAlreadyAdded)
-      throw new ConflictException(
-        `cat already added. Name: ${data.name}, age: ${data.age}, ownerId: ${ownerId}`,
-      );
+      throw new ConflictException(`cat already added. Name: ${data.name}, age: ${data.age}, ownerId: ${ownerId}`);
     return this.prisma.cat.create({
       data,
     });
   }
 
-  async updateCat(params: {
-    where: Prisma.CatWhereUniqueInput;
-    data: Prisma.CatUpdateInput;
-  }): Promise<Cat> {
+  async updateCat(params: { where: Prisma.CatWhereUniqueInput; data: Prisma.CatUpdateInput }): Promise<Cat> {
     const { data, where } = params;
     return this.prisma.cat.update({
       data,
