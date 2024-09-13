@@ -34,14 +34,16 @@ export class CatsService {
     });
   }
 
-  async createCat(data: Prisma.CatCreateInput, ownerId: number): Promise<Cat> {
+  async createCat(data: Prisma.CatCreateInput, userId: number): Promise<Cat> {
     const searchCat = await this.cats({
-      where: { name: data.name, age: data.age, ownerId: ownerId },
+      where: { name: data.name, age: data.age, userId: userId },
     });
     const catAlreadyAdded = !!searchCat.length;
 
-    if (catAlreadyAdded)
-      throw new ConflictException(`cat already added. Name: ${data.name}, age: ${data.age}, ownerId: ${ownerId}`);
+    if (catAlreadyAdded) {
+      throw new ConflictException(`cat already added. Name: ${data.name}, age: ${data.age}, userId: ${userId}`);
+    }
+
     return this.prisma.cat.create({
       data,
     });

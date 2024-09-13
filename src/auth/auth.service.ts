@@ -1,24 +1,25 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AuthDto, TLogin } from './auth.dto';
 import { Prisma } from '@prisma/client';
-import { OwnerService } from '@app/owner/owner.service';
+import { UserService } from '@app/user/user.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private ownerService: OwnerService) {}
+  constructor(private userService: UserService) {}
 
-  async signIn(data: AuthDto): Promise<Prisma.OwnerCreateInput> {
+  async signIn(data: AuthDto): Promise<Prisma.UserCreateInput> {
     // @ts-expect-error login type can be string and number, payload also can be string and number, type validation already done. If i wouldnt write massive switch and duplicate code i must disable TypeScript
-    const owner = await this.ownerService.owner({ [data.loginType]: data.payload });
+    const user = await this.userService.user({ [data.loginType]: data.payload }, null);
 
-    if (!owner) {
+    if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    if (owner.password !== data.password) {
+    if (user.password !== data.password) {
       throw new UnauthorizedException('Invalid password');
     }
 
-    return owner;
+    const token = 'secret-token.tokenSecret';
+    return { ...user, token };
   }
 }

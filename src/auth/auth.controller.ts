@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './auth.dto';
 import { AuthValidation } from '@app/pipes/auth-validation.pipe';
 import { plainToClass } from 'class-transformer';
-import { OwnerResponce } from '@app/owner/dto/owner.dto';
+import { UserResponceDto } from '@app/user/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -12,9 +12,9 @@ export class AuthController {
   @Post()
   @HttpCode(200)
   async signIn(@Body(new AuthValidation()) data: AuthDto) {
-    const owner = await this.authService.signIn(data);
+    const user = await this.authService.signIn(data);
 
     // This is example, how i can filter sensetive data from responce
-    return plainToClass(OwnerResponce, owner);
+    return plainToClass(UserResponceDto, user);
   }
 }

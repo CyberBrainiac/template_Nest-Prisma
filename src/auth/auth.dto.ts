@@ -9,7 +9,6 @@ export enum TLogin {
 
 export class AuthDto {
   @IsNotEmpty()
-  @IsStrongPassword({ minLength: 10, minSymbols: 2, minUppercase: 2, minNumbers: 2 })
   password: string;
 
   @IsNotEmpty()

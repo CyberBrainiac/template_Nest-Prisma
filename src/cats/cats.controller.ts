@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
-import { ValidationPipe } from '@app/pipes/validation.pipe';
 
 @Controller('cats')
 export class CatsController {
@@ -10,22 +9,27 @@ export class CatsController {
 
   @Post()
   create(@Body() createCatDto: CreateCatDto) {
-    const basicEmail = 'basic@gmail.com';
-    const basicName = 'basicName';
+    // For test purpose
+    const defaultUser = {
+      email: 'default@gmail.com',
+      name: 'defaultName',
+      password: 'defaultPassword',
+      phone: 'defaultPhone',
+    };
 
     return this.catsService.createCat(
       {
         age: createCatDto.age,
         breed: createCatDto.breed,
         name: createCatDto.name,
-        owner: {
+        user: {
           connectOrCreate: {
-            where: { id: createCatDto.ownerId },
-            create: { email: basicEmail, name: basicName },
+            where: { id: createCatDto.userId },
+            create: defaultUser,
           },
         },
       },
-      +createCatDto.ownerId,
+      +createCatDto.userId,
     );
   }
 
