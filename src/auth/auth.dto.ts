@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { IsEmail, IsInt, IsMobilePhone, IsNotEmpty, IsStrongPassword, ValidateIf } from 'class-validator';
 
 export enum TLogin {
@@ -14,14 +15,11 @@ export class AuthDto {
   @IsNotEmpty()
   loginType: TLogin;
 
-  @ValidateIf(o => o.login === TLogin.ID)
-  @IsInt()
-  @IsNotEmpty()
-  @ValidateIf(o => o.login === TLogin.EMAIL)
-  @IsEmail()
-  @IsNotEmpty()
-  @ValidateIf(o => o.login === TLogin.PHONE)
-  @IsMobilePhone()
-  @IsNotEmpty()
-  payload: string;
+  @IsNotEmpty() //additional validation in custom AuthValidation pipe
+  payload: string | number;
+}
+
+export class AuthResponceDto extends AuthDto {
+  @Exclude()
+  password: string;
 }

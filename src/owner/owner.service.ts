@@ -6,10 +6,13 @@ import { PrismaService } from '../prisma/prisma.service';
 export class OwnerService {
   constructor(private prisma: PrismaService) {}
 
-  async owner(ownerWhereUniqueInput: Prisma.OwnerWhereUniqueInput): Promise<Owner | null> {
+  async owner(
+    ownerWhereUniqueInput: Prisma.OwnerWhereUniqueInput,
+    include: Prisma.OwnerInclude = { cat: true },
+  ): Promise<Owner | null> {
     return this.prisma.owner.findUnique({
       where: ownerWhereUniqueInput,
-      include: { cat: true },
+      include,
     });
   }
 

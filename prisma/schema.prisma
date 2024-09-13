@@ -18,7 +18,7 @@ model Owner {
   email    String  @unique
   password String
   name     String?
-  phone    Int?
+  phone    String  @unique
   cat      Cat[]
 }
 
