@@ -8,7 +8,7 @@ export class CreateCatDto {
 
   @IsNotEmpty()
   @IsInt()
-  ownerId: number;
+  userId: number;
 
   @IsOptional()
   @IsInt()
