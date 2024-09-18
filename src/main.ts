@@ -3,12 +3,15 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './filters/all-exception.filter';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import * as dotenv from 'dotenv';
 
 async function bootstrap() {
-  const port = 3000;
+  dotenv.config();
+  const port = process.env.PORT;
   const app = await NestFactory.create(AppModule);
-
   const httpAdapter = app.get(HttpAdapterHost);
+
+  app.enableCors();
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   app.useGlobalFilters(new HttpExceptionFilter());
 
@@ -21,7 +24,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(port);
-  Logger.log(`App success started on port: ${port}`);
+  await app.listen(port || 3000);
+  Logger.log(`App success started on port: ${port || 3000}`);
 }
 bootstrap();

@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, IsStrongPassword } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -13,7 +13,7 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  name?: string;
+  name?: string | null;
 
   @IsNotEmpty()
   // @IsPhoneNumber()
@@ -29,4 +29,5 @@ export class UserResponceDto extends UserDto {
   @Exclude()
   password: string;
   cat?: object;
+  token?: string;
 }

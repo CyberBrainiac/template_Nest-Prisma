@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './auth.dto';
 import { AuthValidation } from '@app/pipes/auth-validation.pipe';
@@ -9,8 +9,8 @@ import { UserResponceDto } from '@app/user/user.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
+  @Post('login')
   async signIn(@Body(new AuthValidation()) data: AuthDto) {
     const user = await this.authService.signIn(data);
 

@@ -1,15 +1,18 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Prisma } from '@prisma/client';
-import { CreateUserDto } from './user.dto';
+import { CreateUserDto, UserResponceDto } from './user.dto';
+import { plainToClass } from 'class-transformer';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() data: CreateUserDto) {
-    return this.userService.createUser(data);
+  async create(@Body() data: CreateUserDto) {
+    const user = await this.userService.createUser(data);
+
+    return plainToClass(UserResponceDto, user);
   }
 
   @Get()

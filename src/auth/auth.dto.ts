@@ -1,5 +1,12 @@
 import { Exclude } from 'class-transformer';
-import { IsEmail, IsInt, IsMobilePhone, IsNotEmpty, IsStrongPassword, ValidateIf } from 'class-validator';
+import {
+  IsEmail,
+  IsInt,
+  IsMobilePhone,
+  IsNotEmpty,
+  IsStrongPassword,
+  ValidateIf,
+} from 'class-validator';
 
 export enum TLogin {
   ID = 'id',

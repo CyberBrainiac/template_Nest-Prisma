@@ -8,9 +8,17 @@ import { PrismaModule } from './prisma/prisma.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { CatsController } from './cats/cats.controller';
 import { AuthModule } from './auth/auth.module';
+import { EncryptModule } from './encrypt/encrypt.module';
 
 @Module({
-  imports: [CatsModule, ConfigModule.forRoot({ isGlobal: true }), UserModule, PrismaModule, AuthModule],
+  imports: [
+    CatsModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    UserModule,
+    PrismaModule,
+    AuthModule,
+    EncryptModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
