@@ -23,6 +23,6 @@ export class PrismaSeederService {
       },
     });
 
-    Logger.log('Default user created', defaultUser);
+    Logger.log('Default user created');
   }
 }

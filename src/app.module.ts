@@ -9,6 +9,8 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { CatsController } from './cats/cats.controller';
 import { AuthModule } from './auth/auth.module';
 import { EncryptModule } from './encrypt/encrypt.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
@@ -20,7 +22,13 @@ import { EncryptModule } from './encrypt/encrypt.module';
     EncryptModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

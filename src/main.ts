@@ -1,10 +1,12 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './filters/all-exception.filter';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import * as dotenv from 'dotenv';
 import { PrismaSeederService } from './prisma/prisma-seeder.service';
+import { AuthGuard } from './guards/auth.guard';
+import { JwtService } from '@nestjs/jwt';
 
 async function bootstrap() {
   dotenv.config();
