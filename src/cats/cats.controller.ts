@@ -2,9 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors } fr
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
-import { LoggingInterceptor } from '@app/interceptors/logging.interceptor';
 
-@UseInterceptors(LoggingInterceptor)
 @Controller('cats')
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}

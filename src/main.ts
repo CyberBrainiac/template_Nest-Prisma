@@ -5,7 +5,6 @@ import { AllExceptionsFilter } from './filters/all-exception.filter';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import * as dotenv from 'dotenv';
 import { PrismaSeederService } from './prisma/prisma-seeder.service';
-import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 async function bootstrap() {
   dotenv.config();
