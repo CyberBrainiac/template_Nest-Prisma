@@ -4,6 +4,8 @@ import { HashService } from '@app/encrypt/hash.service';
 
 @Injectable()
 export class PrismaSeederService {
+  private readonly logger = new Logger(PrismaSeederService.name);
+
   constructor(
     private prisma: PrismaService,
     private readonly hashService: HashService,
@@ -23,6 +25,6 @@ export class PrismaSeederService {
       },
     });
 
-    Logger.log('Default user created');
+    this.logger.log('Default user created');
   }
 }
