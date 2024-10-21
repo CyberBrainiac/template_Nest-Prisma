@@ -19,7 +19,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     // @ts-expect-error this feature is`nt implemented https://github.com/prisma/prisma/issues/25153
     this.$on('query', (e: Prisma.QueryEvent) => {
       this.logger.debug(`Query: ${e.query}`);
-      this.logger.debug(`Duration: ${e.duration}ms`);
     });
   }
 

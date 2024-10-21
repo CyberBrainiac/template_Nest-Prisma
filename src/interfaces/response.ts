@@ -4,16 +4,18 @@ export class BaseResponse<T> {
   success: boolean;
   data: T;
   statusCode: HttpStatus;
-  message?: string;
 }
 
-export class ErrorResponse<T> extends BaseResponse<T> {
-  metadata: ResponseMetadata;
+export class ErrorResponse<T = null> extends BaseResponse<T> {
+  message: string;
+  metadata: ErrorMetadata;
 }
 
-class ResponseMetadata {
+class ErrorMetadata {
   timestamp: string;
   path: string;
   exceptionType: string;
-  exceptionName: string;
+  exceptionName?: string;
+  errorCode?: string;
+  stackTrace?: string;
 }

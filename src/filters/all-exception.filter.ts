@@ -1,4 +1,5 @@
 //source: https://docs.nestjs.com/exception-filters
+import { ErrorResponse } from '@app/interfaces/response';
 import {
   ExceptionFilter,
   Catch,
@@ -7,30 +8,55 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost } from '@nestjs/core';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
+  private readonly logger = new Logger(AllExceptionsFilter.name);
+  constructor(
+    private readonly httpAdapterHost: HttpAdapterHost,
+    private readonly configService: ConfigService,
+  ) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
-    // In certain situations `httpAdapter` might not be available in the
-    // constructor method, thus we should resolve it here.
     const { httpAdapter } = this.httpAdapterHost;
-
     const ctx = host.switchToHttp();
-
+    const request = ctx.getRequest();
     const httpStatus =
       exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const responseBody = {
-      type: 'UNHANDLED exception',
+    let errorMessage: string;
+    if (exception instanceof Error) {
+      errorMessage = exception.message;
+    } else if (typeof exception === 'string') {
+      errorMessage = exception;
+    } else {
+      errorMessage = 'Internal server error';
+    }
+
+    const responseBody: ErrorResponse<null> = {
+      success: false,
+      data: null,
+      message: errorMessage,
       statusCode: httpStatus,
-      timestamp: new Date().toISOString(),
-      path: httpAdapter.getRequestUrl(ctx.getRequest()),
+      metadata: {
+        timestamp: new Date().toISOString(),
+        path: httpAdapter.getRequestUrl(request),
+        exceptionType: exception instanceof Error ? exception.constructor.name : 'UNKNOWN_ERROR',
+        stackTrace:
+          this.configService.get('NODE_ENV') === 'development'
+            ? exception instanceof Error
+              ? exception.stack
+              : undefined
+            : undefined,
+      },
     };
 
-    Logger.error(exception);
+    this.logger.error(
+      `Unhandled Exception: ${errorMessage}`,
+      exception instanceof Error ? exception.stack : undefined,
+    );
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
 }
