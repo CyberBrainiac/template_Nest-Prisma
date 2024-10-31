@@ -14,11 +14,11 @@
       "@app/*": ["src/*"]
     },
     "incremental": true,
+    //types safety rules
     "skipLibCheck": true,
     "strictNullChecks": true,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noEmitOnError": true,
+    "strict": false,
+    "noImplicitAny": false
   }
 }

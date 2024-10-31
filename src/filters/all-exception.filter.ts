@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost } from '@nestjs/core';
+import axios from 'axios';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -23,16 +24,31 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
-    const httpStatus =
-      exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-
+    let httpStatus: number;
     let errorMessage: string;
-    if (exception instanceof Error) {
+
+    /**  Тимчасовий варіант
+     *
+     *   Переробити перевірку errorMessage та httpStatus
+     *
+     * */
+    if (axios.isAxiosError(exception)) {
+      errorMessage =
+        exception.response?.data.message ?? exception.response?.statusText ?? 'AXIOS_ERROR';
+      httpStatus =
+        exception.status ?? exception.response?.status ?? HttpStatus.INTERNAL_SERVER_ERROR;
+    } else if (exception instanceof HttpException) {
       errorMessage = exception.message;
+      httpStatus = exception.getStatus();
+    } else if (exception instanceof Error) {
+      errorMessage = exception.message;
+      httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     } else if (typeof exception === 'string') {
       errorMessage = exception;
+      httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     } else {
       errorMessage = 'Internal server error';
+      httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
     const responseBody: ErrorResponse<null> = {
