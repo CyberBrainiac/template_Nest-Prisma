@@ -16,5 +16,6 @@
 $ npm run dev
 
 # production mode
-$ npm run start:prod
+$ npm run dev
+$ npm run serve
 ```
