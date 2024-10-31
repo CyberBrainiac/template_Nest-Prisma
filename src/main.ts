@@ -3,14 +3,23 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './filters/all-exception.filter';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import * as dotenv from 'dotenv';
+import { PrismaSeederService } from './prisma/prisma-seeder.service';
+import { ConfigService } from '@nestjs/config';
+import { BaseResponseInterceptor } from './interceptors/baseResponse.interceptor';
 
 async function bootstrap() {
-  const port = 3000;
+  dotenv.config();
+  const port = process.env.PORT;
   const app = await NestFactory.create(AppModule);
-
   const httpAdapter = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
-  app.useGlobalFilters(new HttpExceptionFilter());
+  const configService = app.get(ConfigService);
+  const prismaSeeder = app.get(PrismaSeederService);
+
+  app.enableCors();
+  app.useGlobalInterceptors(new BaseResponseInterceptor());
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter, configService));
+  app.useGlobalFilters(new HttpExceptionFilter(configService));
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -21,7 +30,8 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(port);
-  Logger.log(`App success started on port: ${port}`);
+  await prismaSeeder.seed();
+  await app.listen(port || 3000);
+  Logger.log(`App success started on port: ${port || 3000}`);
 }
 bootstrap();

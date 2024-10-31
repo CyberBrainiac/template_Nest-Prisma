@@ -19,7 +19,6 @@ model User {
   password String
   name     String?
   phone    String  @unique
-  token    String?
   cat      Cat[]
 }
 
